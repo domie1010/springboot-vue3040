@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yjkj.framework.rbac.act.dao.ActDao">
+	<resultMap type="com.yjkj.framework.rbac.act.model.Act" id="actMap">
+	<association property="userInfo" column="user_id" javaType="com.yjkj.framework.rbac.userInfo.model.UserInfo" select="com.yjkj.framework.rbac.userInfo.dao.UserInfoDao.queryOne"></association>
+	</resultMap>
+	<select id="informationLoad" parameterType="java.util.HashMap"
+		resultMap="actMap">
+		SELECT
+		*
+		FROM
+		act 
+		<where>
+			is_delete = '0'
+			<if test="act.type != null and act.type != ''">
+				AND type = #{act.type}
+			</if>
+			<if test="act.user_id != null and act.user_id != ''">
+				AND user_id = #{act.user_id}
+			</if>
+		</where>
+		ORDER BY
+		id
+		DESC
+		LIMIT
+		#{pager.offSet},#{pager.pageSize}
+	</select>
+	<select id="informationLoadAll"
+		resultMap="actMap">
+		SELECT
+		*
+		FROM
+		act 
+		<where>
+			is_delete = '0'
+		</where>
+		ORDER BY
+		id
+		DESC
+	</select>
+	<select id="count" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		act
+		<where>
+			is_delete = '0'
+			<if test="type != null and type != ''">
+				AND type = #{type}
+			</if>
+			<if test="user_id != null and user_id != ''">
+				AND user_id = #{user_id}
+			</if>
+		</where>
+	</select>
+	<select id="informationLoadOne"  resultMap="actMap">
+		SELECT
+		*
+		FROM
+		act
+		WHERE
+		id=#{id}
+	</select>
+
+
+	<delete id="informationDelete" >
+		UPDATE
+		act
+		SET
+		is_delete = '1'
+		WHERE id=#{id}
+	</delete>
+
+
+	<insert id="informationAdd" parameterType="com.yjkj.framework.rbac.act.model.Act">
+		INSERT INTO
+		act
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="user_id != null">
+				user_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="is_delete != null">
+				is_delete,
+			</if>
+			<if test="flag != null">
+				flag,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="user_id != null">
+				#{user_id},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="url != null">
+				#{url},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="content != null">
+				#{content},
+			</if>
+			<if test="remark != null">
+				#{remark},
+			</if>
+			<if test="createtime != null">
+				#{createtime},
+			</if>
+			<if test="is_delete != null">
+				#{is_delete},
+			</if>
+			<if test="flag != null">
+				#{flag},
+			</if>
+		</trim>
+	</insert>
+	<update id="informationUpdate" parameterType="com.yjkj.framework.rbac.act.model.Act">
+		UPDATE
+		act
+		<set>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="user_id != null">
+				user_id=#{user_id},
+			</if>
+			<if test="type != null">
+				type=#{type},
+			</if>
+			<if test="url != null">
+				url=#{url},
+			</if>
+			<if test="status != null">
+				status=#{status},
+			</if>
+			<if test="content != null">
+				content=#{content},
+			</if>
+			<if test="remark != null">
+				remark=#{remark},
+			</if>
+			<if test="createtime != null">
+				createtime=#{createtime},
+			</if>
+			<if test="is_delete != null">
+				is_delete=#{is_delete},
+			</if>
+			<if test="flag != null">
+				flag=#{flag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+</mapper>
